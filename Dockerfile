@@ -1,5 +1,5 @@
-#Creates a centos7 rpm build environment
-FROM centos:centos7
+#Creates a centos6 rpm build environment
+FROM centos:centos6
 
 MAINTAINER Ryan Bauman <ryanbauman@gmail.com>
 
