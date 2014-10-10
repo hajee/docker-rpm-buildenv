@@ -3,10 +3,13 @@ Creates a [Docker](https://www.docker.com/) image useful for building RPMs
 
 The image can be pulled from the [Docker Hub Registry](https://registry.hub.docker.com/u/ryanbauman/rpm-buildenv/)
 
-The default entrypoint for this image runs a shell script that expects the docker workdir to be set to a location containing the source to built (including the specfile) and the specfile location within that location to be passed as an argument, e.g.:
+This image runs a shell script that expects the docker workdir to be set to a location containing the source to build (including the specfile) and the specfile location within that location to be passed as an argument, e.g.:
 
-    docker run --volume $PWD:/tmp --workdir /tmp ryanbauman/rpm-buildenv /tmp/spec.spec
+    docker run --volume $PWD:/tmp --workdir /tmp ryanbauman/rpm-buildenv /root/build.sh /tmp/spec.spec
 
-The shell script packaged with this image builds and installs the binary RPMs and then cleans the build environment so that dependent builds may consume the resultant environment.
+Optionally you may choose to create a yum repository that down stream images may consume via:
 
-Currently only a CentOS 6 environment is provided.  CentOS 5 and CentOS 7 environments will be supported in the future.
+    docker run --volume $PWD:/tmp --volume --volume --volume <some location on disk>/yumrepo:/root/yum /data/jenkins/centos7/yumrepo:/root/yum --workdir /tmp ryanbauman/rpm-buildenv /root/build.sh /tmp/spec.spec
+
+Or if you do not want to use the yum repository the image will install the built RPMs as a final step allowing you to tag and commit the finished container to reuse downstream.
+
